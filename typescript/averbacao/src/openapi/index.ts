@@ -7,12 +7,12 @@ import {
   OfertasRequestSchema,
   OfertasResponseSchema,
   SaudeResponseSchema,
-} from "./dto.js";
+} from "../core/dto.js";
 
 /**
  * OpenAPI das rotas que o BANCO precisa implementar (docs/07 §9: "OpenAPI
  * gerado dos mesmos schemas"), gerado a partir dos schemas Zod que o próprio
- * `fastify.ts` usa para validar em runtime — não é um YAML escrito à mão que
+ * plugin Fastify usa para validar em runtime — não é um YAML escrito à mão que
  * diverge do código na primeira mudança de schema; é o schema, formatado
  * como JSON Schema.
  *
@@ -95,7 +95,7 @@ export function gerarOpenApiSpec(options: GerarOpenApiSpecOptions = {}): Record<
       version: String(versao),
       description:
         "Rotas que um banco conveniado precisa implementar para integrar com a Atlas via @atlas/averbacao-sdk (docs/07-sdk-bancos.md). " +
-        "Gerado a partir dos mesmos schemas Zod que `atlasAverbacao` (fastify.ts) valida em runtime — rode `npx atlas-sdk openapi` para regenerar após qualquer mudança de contrato.",
+        "Gerado a partir dos mesmos schemas Zod que `atlasAverbacao` valida em runtime — rode `npx atlas-sdk openapi` para regenerar após qualquer mudança de contrato.",
     },
     servers: [{ url: "{integracao_base_url}", description: "Base URL cadastrada em bancos.integracao_base_url", variables: { integracao_base_url: { default: "https://api.bancox.com.br/atlas/v1" } } }],
     paths: {

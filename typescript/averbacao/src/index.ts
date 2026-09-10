@@ -5,7 +5,7 @@ export {
   OfertasRequestSchema,
   OfertasResponseSchema,
   SaudeResponseSchema,
-} from "./dto.js";
+} from "./core/dto.js";
 export type {
   ContratacaoNotificacao,
   ContratacaoNotificacaoDto,
@@ -19,9 +19,9 @@ export type {
   OfertasResponseDto,
   SaudeResponse,
   SaudeResponseDto,
-} from "./dto.js";
-export { hmac, signAtlasRequest, signOferta, verifyAtlasRequest, verifyOferta } from "./crypto.js";
-export type { AtlasRequestHeaders } from "./crypto.js";
-export type { AverbacaoService } from "./service.js";
-export { AverbacaoController } from "./controller.js";
-export type { AtlasAverbacaoConfig } from "./controller.js";
+} from "./core/dto.js";
+export { hmac, signAtlasRequest, signOferta, verifyAtlasRequest, verifyOferta } from "./core/crypto.js";
+export type { AtlasRequestHeaders } from "./core/crypto.js";
+export type { AverbacaoService } from "./core/service.js";
+export { AverbacaoController } from "./core/controller.js";
+export type { AtlasAverbacaoConfig } from "./core/controller.js";

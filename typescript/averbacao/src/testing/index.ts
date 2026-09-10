@@ -1,17 +1,18 @@
 import { generateKeyPairSync } from "node:crypto";
 import Fastify, { type FastifyInstance } from "fastify";
-import { atlasAverbacao, type AtlasAverbacaoOptions } from "./fastify.js";
-import { signAtlasRequest, type OfertasRequestDto, type OfertasResponseDto } from "./index.js";
+import { atlasAverbacao, type AtlasAverbacaoOptions } from "../adapters/fastify.js";
+import { signAtlasRequest } from "../core/crypto.js";
+import type { OfertasRequestDto, OfertasResponseDto } from "../core/dto.js";
 
 /**
  * `@atlas/averbacao-sdk/testing` — servidor Fastify real (`fakeBank`) com o
  * service do banco atrás do mesmo controller de produção, chamador que
  * simula a Atlas (`chamarOfertas`), fixtures e `runVerify`/`runSimulate`.
  */
-export { runVerify } from "./verify.js";
-export type { VerifyCheck, VerifyOptions, VerifyResult } from "./verify.js";
-export { gerarSimulateRequest, runSimulate } from "./simulate.js";
-export type { SimulateDivergencia, SimulateOptions, SimulateRequestOverrides, SimulateResult } from "./simulate.js";
+export { runVerify } from "../cli/verify.js";
+export type { VerifyCheck, VerifyOptions, VerifyResult } from "../cli/verify.js";
+export { gerarSimulateRequest, runSimulate } from "../cli/simulate.js";
+export type { SimulateDivergencia, SimulateOptions, SimulateRequestOverrides, SimulateResult } from "../cli/simulate.js";
 
 /**
  * Sobe Fastify real com o `AverbacaoService` do banco atrás do controller.

@@ -1,4 +1,5 @@
-import { OfertasResponseSchema, signAtlasRequest, verifyOferta, type OfertasRequestDto } from "./index.js";
+import { OfertasResponseSchema, type OfertasRequestDto } from "../core/dto.js";
+import { signAtlasRequest, verifyOferta } from "../core/crypto.js";
 
 /**
  * Bateria de conformidade `atlas-sdk verify` — docs/07-sdk-bancos.md §2 e §8:

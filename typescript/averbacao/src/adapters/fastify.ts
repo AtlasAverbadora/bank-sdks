@@ -1,12 +1,12 @@
 import type { FastifyPluginAsync } from "fastify";
 import { ZodError } from "zod";
-import { AverbacaoController, type AtlasAverbacaoConfig } from "./controller.js";
-import { verifyAtlasRequest } from "./crypto.js";
-import type { AverbacaoService } from "./service.js";
+import { AverbacaoController, type AtlasAverbacaoConfig } from "../core/controller.js";
+import { verifyAtlasRequest } from "../core/crypto.js";
+import type { AverbacaoService } from "../core/service.js";
 
-export type { AtlasAverbacaoConfig } from "./controller.js";
-export { AverbacaoController } from "./controller.js";
-export type { AverbacaoService } from "./service.js";
+export type { AtlasAverbacaoConfig } from "../core/controller.js";
+export { AverbacaoController } from "../core/controller.js";
+export type { AverbacaoService } from "../core/service.js";
 
 export type AtlasAverbacaoOptions = AtlasAverbacaoConfig & {
   service: AverbacaoService;

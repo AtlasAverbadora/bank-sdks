@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 import { readFileSync, writeFileSync } from "node:fs";
-import { signOferta, type OfertaDto } from "./index.js";
+import { signOferta } from "../core/crypto.js";
+import type { OfertaDto } from "../core/dto.js";
 import { runVerify } from "./verify.js";
 import { runSimulate, type SimulateRequestOverrides } from "./simulate.js";
-import { gerarOpenApiSpec, validarOpenApiDocument } from "./openapi.js";
+import { gerarOpenApiSpec, validarOpenApiDocument } from "../openapi/index.js";
 
 /**
  * `atlas-sdk` — CLI do pacote (docs/07-sdk-bancos.md §9). Quatro comandos

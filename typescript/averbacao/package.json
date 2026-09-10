@@ -7,11 +7,11 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
-    "./fastify": { "types": "./dist/fastify.d.ts", "default": "./dist/fastify.js" },
-    "./testing": { "types": "./dist/testing.d.ts", "default": "./dist/testing.js" },
-    "./openapi": { "types": "./dist/openapi.d.ts", "default": "./dist/openapi.js" }
+    "./fastify": { "types": "./dist/adapters/fastify.d.ts", "default": "./dist/adapters/fastify.js" },
+    "./testing": { "types": "./dist/testing/index.d.ts", "default": "./dist/testing/index.js" },
+    "./openapi": { "types": "./dist/openapi/index.d.ts", "default": "./dist/openapi/index.js" }
   },
-  "bin": { "atlas-sdk": "./dist/cli.js" },
+  "bin": { "atlas-sdk": "./dist/cli/index.js" },
   "scripts": { "build": "tsc -p tsconfig.json", "prepare": "tsc -p tsconfig.json" },
   "dependencies": { "fastify": "5.11.3", "zod": "^3.25.76", "zod-to-json-schema": "^3.25.2" },
   "devDependencies": { "@types/node": "^20.14.10", "typescript": "^5.5.3" }

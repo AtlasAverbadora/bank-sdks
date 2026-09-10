@@ -1,9 +1,10 @@
-import { OfertasResponseSchema, signAtlasRequest, verifyOferta, type OfertaDto, type OfertasRequestDto } from "./index.js";
+import { OfertasResponseSchema, type OfertaDto, type OfertasRequestDto } from "../core/dto.js";
+import { signAtlasRequest, verifyOferta } from "../core/crypto.js";
 
 /**
  * `atlas-sdk simulate` — a lacuna que ficou da Fase 6 (docs/07 §9 lista
  * `simulate` numa tabela, sem especificação — decisão registrada em
- * `cli.ts` / README §7).
+ * `cli/index.ts` / README §7).
  *
  * DESENHO ESCOLHIDO: `verify` responde "sua implementação está conforme?"
  * (checks binários, exit code de CI). `simulate` responde uma pergunta
