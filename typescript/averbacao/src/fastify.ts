@@ -1,27 +1,20 @@
-import type { FastifyPluginAsync, FastifyRequest } from "fastify";
+import type { FastifyPluginAsync } from "fastify";
 import { ZodError } from "zod";
-import { OfertasRequestSchema, OfertasResponseSchema, signOferta, verifyAtlasRequest, type AtlasSdkHandlers } from "./index.js";
+import { AverbacaoController, type AtlasAverbacaoConfig } from "./controller.js";
+import { verifyAtlasRequest } from "./crypto.js";
+import type { AverbacaoService } from "./service.js";
 
-export type AtlasAverbacaoOptions = AtlasSdkHandlers & {
-  segredo: string | Buffer;
-  versao?: number;
-  /**
-   * Opcional: quando informada, toda oferta devolvida por `ofertas()` que
-   * ainda não vier assinada (`assinatura` ausente) é assinada aqui antes de
-   * responder — é o "auto-assinatura" documentado no README/docs/07 §2 e §7.
-   * Um handler que já assina manualmente (chamando `signOferta` ele mesmo e
-   * preenchendo `assinatura`) continua funcionando sem mudança: o plugin
-   * nunca sobrescreve uma assinatura já presente, então não há assinatura
-   * dupla nem invalidação da assinatura existente.
-   */
-  chavePrivada?: string | Buffer;
+export type { AtlasAverbacaoConfig } from "./controller.js";
+export { AverbacaoController } from "./controller.js";
+export type { AverbacaoService } from "./service.js";
+
+export type AtlasAverbacaoOptions = AtlasAverbacaoConfig & {
+  service: AverbacaoService;
 };
 
 export const atlasAverbacao: FastifyPluginAsync<AtlasAverbacaoOptions> = async (app, options) => {
-  // Erro de validação Zod na borda vira 400 (erro do chamador), nunca 500
-  // (que sugeriria falha nossa) — é a diferença que `atlas-sdk verify`
-  // cobra (docs/07 §2: "validação Zod na borda"). Encapsulado pelo Fastify:
-  // só cobre as rotas registradas dentro deste plugin.
+  const controller = new AverbacaoController(options.service, options);
+
   app.setErrorHandler((error: unknown, _request, reply) => {
     if (error instanceof ZodError) {
       return reply.code(400).send({ code: "validation_error", detalhes: error.issues });
@@ -29,32 +22,21 @@ export const atlasAverbacao: FastifyPluginAsync<AtlasAverbacaoOptions> = async (
     const mensagem = error instanceof Error ? error.message : String(error);
     return reply.code(500).send({ code: "erro_interno", detalhe: mensagem });
   });
+
   app.addHook("preValidation", async (request, reply) => {
     if (!["POST"].includes(request.method) || request.url === "/saude") return;
     const body = JSON.stringify(request.body ?? {});
     const signature = String(request.headers["atlas-signature"] ?? "");
-    if (!verifyAtlasRequest(options.segredo, body, signature)) return reply.code(401).send({ code: "invalid_signature" });
-  });
-  app.post("/ofertas", async (request, reply) => {
-    const input = OfertasRequestSchema.parse(request.body);
-    const response = OfertasResponseSchema.parse(await options.ofertas(input));
-    if (options.chavePrivada) {
-      response.ofertas = response.ofertas.map((oferta) => {
-        if (oferta.assinatura) return oferta; // já assinada pelo handler — não assina de novo nem sobrescreve.
-        const { assinatura: _semAssinatura, ...unsigned } = oferta;
-        return { ...unsigned, assinatura: signOferta(options.chavePrivada!, unsigned) };
-      });
+    if (!verifyAtlasRequest(options.segredo, body, signature)) {
+      return reply.code(401).send({ code: "invalid_signature" });
     }
-    return reply.header("Atlas-SDK-Version", String(options.versao ?? 1)).send(response);
   });
-  app.post("/contratacoes", async (request) => { await options.contratacaoIniciada?.(request.body); return { ok: true }; });
-  app.post("/eventos", async (request) => {
-    const body = request.body as { tipo?: string; dados?: unknown };
-    const handlers: Record<string, ((payload: unknown) => Promise<void> | void) | undefined> = {
-      "contrato.averbado": options.contratoAverbado, "adf.liberada": options.adfLiberada, "retencao.oportunidade.aberta": options.retencaoOportunidade,
-    };
-    await handlers[body.tipo ?? ""]?.(body.dados);
-    return { ok: true };
+
+  app.post("/ofertas", async (request, reply) => {
+    const response = await controller.ofertas(request.body);
+    return reply.header("Atlas-SDK-Version", String(controller.versao())).send(response);
   });
-  app.get("/saude", async () => ({ ok: true, sdk_version: options.versao ?? 1 }));
+  app.post("/contratacoes", async (request) => controller.contratacaoIniciada(request.body));
+  app.post("/eventos", async (request) => controller.evento(request.body));
+  app.get("/saude", async () => controller.saude());
 };

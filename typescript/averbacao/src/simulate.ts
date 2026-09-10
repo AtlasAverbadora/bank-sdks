@@ -1,4 +1,4 @@
-import { OfertasResponseSchema, signAtlasRequest, verifyOferta, type Oferta, type OfertasRequest } from "./index.js";
+import { OfertasResponseSchema, signAtlasRequest, verifyOferta, type OfertaDto, type OfertasRequestDto } from "./index.js";
 
 /**
  * `atlas-sdk simulate` — a lacuna que ficou da Fase 6 (docs/07 §9 lista
@@ -43,7 +43,7 @@ export interface SimulateRequestOverrides {
 }
 
 /** Monta uma requisição `/ofertas` realista, com cada parâmetro de negócio controlável — é o payload que `simulate` dispara. */
-export function gerarSimulateRequest(overrides: SimulateRequestOverrides = {}): OfertasRequest {
+export function gerarSimulateRequest(overrides: SimulateRequestOverrides = {}): OfertasRequestDto {
   return {
     correlacao_id: overrides.correlacaoId ?? "0192f3e1-0000-7000-8000-000000000099",
     convenio: {
@@ -88,7 +88,7 @@ export interface SimulateOptions {
 
 export interface SimulateResult {
   url: string;
-  request: OfertasRequest;
+  request: OfertasRequestDto;
   status: number | null;
   sdkVersionHeader: string | null;
   responseBody: unknown;
@@ -97,7 +97,7 @@ export interface SimulateResult {
   erroTransporte?: string;
 }
 
-function validarTetos(oferta: Oferta, request: OfertasRequest): SimulateDivergencia[] {
+function validarTetos(oferta: OfertaDto, request: OfertasRequestDto): SimulateDivergencia[] {
   const divergencias: SimulateDivergencia[] = [];
   if (oferta.valor_parcela > request.margem.disponivel) {
     divergencias.push({

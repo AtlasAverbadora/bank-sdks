@@ -1,4 +1,4 @@
-import { OfertasResponseSchema, signAtlasRequest, verifyOferta, type OfertasRequest } from "./index.js";
+import { OfertasResponseSchema, signAtlasRequest, verifyOferta, type OfertasRequestDto } from "./index.js";
 
 /**
  * Bateria de conformidade `atlas-sdk verify` — docs/07-sdk-bancos.md §2 e §8:
@@ -28,7 +28,7 @@ export interface VerifyOptions {
   timeoutMs?: number;
 }
 
-function ofertasRequestExemplo(): OfertasRequest {
+function ofertasRequestExemplo(): OfertasRequestDto {
   return {
     correlacao_id: "0192f3e1-0000-7000-8000-000000000001",
     convenio: { id: 12, codigo: "CONV-VERIFY-001", prazo_maximo_meses: 96, taxa_teto_am: 0.021 },
@@ -151,7 +151,10 @@ export async function runVerify(baseUrl: string, options: VerifyOptions): Promis
 
   // 7. Rotas obrigatórias do contrato existem e respondem (docs/07 §4.1)
   try {
-    const response = await postAssinado(url, "/contratacoes", options.segredo, { correlacao_id: ofertasRequestExemplo().correlacao_id }, timeoutMs);
+    const response = await postAssinado(url, "/contratacoes", options.segredo, {
+      correlacao_id: ofertasRequestExemplo().correlacao_id,
+      oferta_id: "0192f3e1-0000-7000-8000-000000000002",
+    }, timeoutMs);
     const ok = response.status === 200;
     checks.push({ nome: "POST /contratacoes responde 200 a uma notificação assinada", ok, detalhe: ok ? undefined : `HTTP ${response.status}` });
   } catch (error) {

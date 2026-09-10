@@ -12,6 +12,7 @@
     "./openapi": { "types": "./dist/openapi.d.ts", "default": "./dist/openapi.js" }
   },
   "bin": { "atlas-sdk": "./dist/cli.js" },
-  "scripts": { "build": "tsc -p tsconfig.json" },
-  "dependencies": { "fastify": "5.11.3", "zod": "^3.25.76", "zod-to-json-schema": "^3.25.2" }
+  "scripts": { "build": "tsc -p tsconfig.json", "prepare": "tsc -p tsconfig.json" },
+  "dependencies": { "fastify": "5.11.3", "zod": "^3.25.76", "zod-to-json-schema": "^3.25.2" },
+  "devDependencies": { "@types/node": "^20.14.10", "typescript": "^5.5.3" }
 }

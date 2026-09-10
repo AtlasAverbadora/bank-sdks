@@ -1,17 +1,12 @@
 import { generateKeyPairSync } from "node:crypto";
 import Fastify, { type FastifyInstance } from "fastify";
 import { atlasAverbacao, type AtlasAverbacaoOptions } from "./fastify.js";
-import { signAtlasRequest, type OfertasRequest, type OfertasResponse } from "./index.js";
+import { signAtlasRequest, type OfertasRequestDto, type OfertasResponseDto } from "./index.js";
 
 /**
- * `@atlas/averbacao-sdk/testing` — docs/07-sdk-bancos.md §9: "servidor de
- * mentira e a bateria `verify`". Tudo que um banco precisa para testar a
- * própria implementação sem subir a Atlas: um servidor Fastify real
- * (`fakeBank`) que roda os handlers dele atrás do mesmo plugin de produção,
- * um chamador que simula a Atlas (`chamarOfertas`) assinando do jeito que o
- * nosso `BankClient` assina, geradores de fixture, e a própria bateria de
- * conformidade (`runVerify`) — para o banco poder rodá-la no CI dele contra
- * o `fakeBank`, sem depender de rede nem da CLI.
+ * `@atlas/averbacao-sdk/testing` — servidor Fastify real (`fakeBank`) com o
+ * service do banco atrás do mesmo controller de produção, chamador que
+ * simula a Atlas (`chamarOfertas`), fixtures e `runVerify`/`runSimulate`.
  */
 export { runVerify } from "./verify.js";
 export type { VerifyCheck, VerifyOptions, VerifyResult } from "./verify.js";
@@ -19,12 +14,8 @@ export { gerarSimulateRequest, runSimulate } from "./simulate.js";
 export type { SimulateDivergencia, SimulateOptions, SimulateRequestOverrides, SimulateResult } from "./simulate.js";
 
 /**
- * Sobe um servidor Fastify real, com os handlers do banco atrás do plugin
- * @atlas/averbacao-sdk/fastify. Não é mock de fetch — é um processo HTTP de
- * verdade, escutando numa porta efêmera. `keepAliveTimeout` curto é de
- * propósito: sem isso, `app.close()` num teste espera o socket keep-alive do
- * cliente HTTP (undici/fetch) fechar sozinho, o que pode travar o teardown
- * do teste por vários segundos sem nenhum motivo de negócio.
+ * Sobe Fastify real com o `AverbacaoService` do banco atrás do controller.
+ * `keepAliveTimeout` curto evita `app.close()` travar no keep-alive do fetch.
  */
 export async function fakeBank(options: AtlasAverbacaoOptions): Promise<FastifyInstance> {
   const app = Fastify({ keepAliveTimeout: 100 });
@@ -43,7 +34,7 @@ export function criarChavesEd25519(): { chavePrivada: string; chavePublica: stri
 }
 
 /** Requisição `/ofertas` de exemplo, válida contra `OfertasRequestSchema` — para não obrigar cada teste de banco a montar o payload inteiro à mão. */
-export function gerarOfertasRequestExemplo(overrides: Partial<OfertasRequest> = {}): OfertasRequest {
+export function gerarOfertasRequestExemplo(overrides: Partial<OfertasRequestDto> = {}): OfertasRequestDto {
   return {
     correlacao_id: "0192f3e1-0000-7000-8000-000000000001",
     convenio: { id: 12, codigo: "CONV-TEST-001", prazo_maximo_meses: 96, taxa_teto_am: 0.021 },
@@ -68,7 +59,7 @@ export function gerarOfertasRequestExemplo(overrides: Partial<OfertasRequest> = 
  * escrever o próprio teste de integração contra o `fakeBank` (ou contra o
  * ambiente real dele) sem duplicar a lógica de assinatura.
  */
-export async function chamarOfertas(baseUrl: string, segredo: string | Buffer, request: OfertasRequest): Promise<{ status: number; body: OfertasResponse | unknown; headers: Headers }> {
+export async function chamarOfertas(baseUrl: string, segredo: string | Buffer, request: OfertasRequestDto): Promise<{ status: number; body: OfertasResponseDto | unknown; headers: Headers }> {
   const corpo = JSON.stringify(request);
   const response = await fetch(`${baseUrl.replace(/\/$/, "")}/ofertas`, {
     method: "POST",

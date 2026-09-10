@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { readFileSync, writeFileSync } from "node:fs";
-import { signOferta, type Oferta } from "./index.js";
+import { signOferta, type OfertaDto } from "./index.js";
 import { runVerify } from "./verify.js";
 import { runSimulate, type SimulateRequestOverrides } from "./simulate.js";
 import { gerarOpenApiSpec, validarOpenApiDocument } from "./openapi.js";
@@ -190,7 +190,7 @@ async function runSignCommand(args: string[]): Promise<number> {
     return 2;
   }
   const chavePrivada = readFileSync(chavePrivadaPath, "utf8");
-  const oferta = JSON.parse(readFileSync(ofertaPath, "utf8")) as Omit<Oferta, "assinatura">;
+  const oferta = JSON.parse(readFileSync(ofertaPath, "utf8")) as Omit<OfertaDto, "assinatura">;
   const assinatura = signOferta(chavePrivada, oferta);
   console.log(assinatura);
   return 0;
