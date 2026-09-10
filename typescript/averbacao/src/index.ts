@@ -5,7 +5,7 @@ export {
   OfertasRequestSchema,
   OfertasResponseSchema,
   SaudeResponseSchema,
-} from "./core/dto.js";
+} from "./core/dto/index.js";
 export type {
   ContratacaoNotificacao,
   ContratacaoNotificacaoDto,
@@ -19,7 +19,7 @@ export type {
   OfertasResponseDto,
   SaudeResponse,
   SaudeResponseDto,
-} from "./core/dto.js";
+} from "./core/dto/index.js";
 export { hmac, signAtlasRequest, signOferta, verifyAtlasRequest, verifyOferta } from "./core/crypto.js";
 export type { AtlasRequestHeaders } from "./core/crypto.js";
 export type { AverbacaoService } from "./core/service.js";

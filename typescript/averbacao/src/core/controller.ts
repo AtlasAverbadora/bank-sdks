@@ -5,7 +5,7 @@ import {
   type ContratacaoNotificacaoDto,
   type OfertasResponseDto,
   type SaudeResponseDto,
-} from "./dto.js";
+} from "./dto/index.js";
 import { signOferta } from "./crypto.js";
 import type { AverbacaoService } from "./service.js";
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { readFileSync, writeFileSync } from "node:fs";
 import { signOferta } from "../core/crypto.js";
-import type { OfertaDto } from "../core/dto.js";
+import type { OfertaDto } from "../core/dto/index.js";
 import { runVerify } from "./verify.js";
 import { runSimulate, type SimulateRequestOverrides } from "./simulate.js";
 import { gerarOpenApiSpec, validarOpenApiDocument } from "../openapi/index.js";

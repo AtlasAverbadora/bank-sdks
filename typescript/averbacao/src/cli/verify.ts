@@ -1,4 +1,4 @@
-import { OfertasResponseSchema, type OfertasRequestDto } from "../core/dto.js";
+import { OfertasResponseSchema, type OfertasRequestDto } from "../core/dto/index.js";
 import { signAtlasRequest, verifyOferta } from "../core/crypto.js";
 
 /**

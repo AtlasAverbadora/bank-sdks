@@ -7,7 +7,7 @@ import {
   OfertasRequestSchema,
   OfertasResponseSchema,
   SaudeResponseSchema,
-} from "../core/dto.js";
+} from "../core/dto/index.js";
 
 /**
  * OpenAPI das rotas que o BANCO precisa implementar (docs/07 §9: "OpenAPI

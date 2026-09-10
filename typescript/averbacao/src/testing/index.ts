@@ -2,7 +2,7 @@ import { generateKeyPairSync } from "node:crypto";
 import Fastify, { type FastifyInstance } from "fastify";
 import { atlasAverbacao, type AtlasAverbacaoOptions } from "../adapters/fastify.js";
 import { signAtlasRequest } from "../core/crypto.js";
-import type { OfertasRequestDto, OfertasResponseDto } from "../core/dto.js";
+import type { OfertasRequestDto, OfertasResponseDto } from "../core/dto/index.js";
 
 /**
  * `@atlas/averbacao-sdk/testing` — servidor Fastify real (`fakeBank`) com o

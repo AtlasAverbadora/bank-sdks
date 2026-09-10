@@ -1,4 +1,4 @@
-import type { ContratacaoNotificacaoDto, OfertasRequestDto, OfertasResponseDto } from "./dto.js";
+import type { ContratacaoNotificacaoDto, OfertasRequestDto, OfertasResponseDto } from "./dto/index.js";
 
 /**
  * Única peça que o banco implementa. O SDK dono do controller chama estes

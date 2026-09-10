@@ -1,5 +1,5 @@
 import { createHmac, createPrivateKey, createPublicKey, sign, timingSafeEqual, verify } from "node:crypto";
-import type { OfertaDto } from "./dto.js";
+import type { OfertaDto } from "./dto/index.js";
 
 export type AtlasRequestHeaders = { timestamp: number; signature: string };
 
