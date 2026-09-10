@@ -2,7 +2,7 @@
 
 SDKs para bancos conveniados integrarem com a Atlas.
 
-O banco implementa só o service (motor de crédito e callbacks). Rotas, DTOs, validação, HMAC e versionamento ficam no SDK.
+O banco liga um service por domínio (ofertas, contratação, contrato, retenção). Rotas, DTOs, validação, HMAC e versionamento ficam no SDK. Modo Ataque é chamada do banco para a Atlas (`reservas-compostas`), não notificação neste SDK.
 
 | Pasta | Linguagem | Pacote |
 |---|---|---|

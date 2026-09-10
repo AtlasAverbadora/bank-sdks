@@ -22,6 +22,12 @@ export type {
 } from "./core/dto/index.js";
 export { hmac, signAtlasRequest, signOferta, verifyAtlasRequest, verifyOferta } from "./core/crypto.js";
 export type { AtlasRequestHeaders } from "./core/crypto.js";
-export type { AverbacaoService } from "./core/service.js";
+export type {
+  AverbacaoServices,
+  ContratacaoService,
+  ContratoService,
+  OfertasService,
+  RetencaoService,
+} from "./core/services.js";
 export { AverbacaoController } from "./core/controller.js";
 export type { AtlasAverbacaoConfig } from "./core/controller.js";

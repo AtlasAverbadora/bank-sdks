@@ -131,7 +131,7 @@ export function gerarOpenApiSpec(options: GerarOpenApiSpecOptions = {}): Record<
       "/eventos": {
         post: {
           operationId: "postEventos",
-          summary: "Atlas envia um evento de domínio (contrato.averbado, adf.liberada, retencao.oportunidade.aberta, …) — mesmo envelope de docs/06-eventos-filas.md §3.",
+          summary: "Atlas envia um evento de domínio (contrato.averbado, retencao.oportunidade.aberta, …). `adf.liberada` é interno do backend (reserva composta), não chega no banco.",
           parameters: [ASSINATURA_HEADER],
           requestBody: { required: true, content: { "application/json": { schema: eventoSchema } } },
           responses: {

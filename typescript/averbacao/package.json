@@ -7,7 +7,9 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
+    "./http": { "types": "./dist/adapters/http.d.ts", "default": "./dist/adapters/http.js" },
     "./fastify": { "types": "./dist/adapters/fastify.d.ts", "default": "./dist/adapters/fastify.js" },
+    "./examples": { "types": "./dist/examples/index.d.ts", "default": "./dist/examples/index.js" },
     "./testing": { "types": "./dist/testing/index.d.ts", "default": "./dist/testing/index.js" },
     "./openapi": { "types": "./dist/openapi/index.d.ts", "default": "./dist/openapi/index.js" }
   },

@@ -5,6 +5,7 @@ import type { OfertaDto } from "../core/dto/index.js";
 import { runVerify } from "./verify.js";
 import { runSimulate, type SimulateRequestOverrides } from "./simulate.js";
 import { gerarOpenApiSpec, validarOpenApiDocument } from "../openapi/index.js";
+import { parseFlags } from "./flags.js";
 
 /**
  * `atlas-sdk` — CLI do pacote (docs/07-sdk-bancos.md §9). Quatro comandos
@@ -36,24 +37,6 @@ import { gerarOpenApiSpec, validarOpenApiDocument } from "../openapi/index.js";
  *     Assina uma oferta (sem `assinatura`) com a chave privada do banco — útil
  *     para inspecionar manualmente o que `atlasAverbacao` calcula por baixo.
  */
-
-function parseFlags(args: string[]): { positional: string[]; flags: Record<string, string> } {
-  const positional: string[] = [];
-  const flags: Record<string, string> = {};
-  for (let i = 0; i < args.length; i += 1) {
-    const arg = args[i]!;
-    if (arg.startsWith("--")) {
-      const name = arg.slice(2);
-      const value = args[i + 1];
-      if (value === undefined || value.startsWith("--")) throw new Error(`Flag --${name} exige um valor.`);
-      flags[name] = value;
-      i += 1;
-    } else {
-      positional.push(arg);
-    }
-  }
-  return { positional, flags };
-}
 
 async function runVerifyCommand(args: string[]): Promise<number> {
   const { positional, flags } = parseFlags(args);

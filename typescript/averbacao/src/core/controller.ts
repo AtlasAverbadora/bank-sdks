@@ -7,7 +7,7 @@ import {
   type SaudeResponseDto,
 } from "./dto/index.js";
 import { signOferta } from "./crypto.js";
-import type { AverbacaoService } from "./service.js";
+import type { AverbacaoServices } from "./services.js";
 
 export type AtlasAverbacaoConfig = {
   segredo: string | Buffer;
@@ -20,12 +20,12 @@ export type AtlasAverbacaoConfig = {
 };
 
 /**
- * Dono das rotas: valida DTO, chama o service do banco, assina ofertas.
- * Sem HTTP — o plugin Fastify só traduz request/reply para estes métodos.
+ * Dono das rotas: valida DTO, despacha para o service do domínio, assina ofertas.
+ * Sem HTTP — o adapter só traduz request/reply para estes métodos.
  */
 export class AverbacaoController {
   constructor(
-    private readonly service: AverbacaoService,
+    private readonly services: AverbacaoServices,
     private readonly config: AtlasAverbacaoConfig,
   ) {}
 
@@ -35,7 +35,7 @@ export class AverbacaoController {
 
   async ofertas(body: unknown): Promise<OfertasResponseDto> {
     const input = OfertasRequestSchema.parse(body);
-    const response = OfertasResponseSchema.parse(await this.service.ofertas(input));
+    const response = OfertasResponseSchema.parse(await this.services.ofertas.gerar(input));
     if (!this.config.chavePrivada) return response;
     return {
       ...response,
@@ -49,16 +49,15 @@ export class AverbacaoController {
 
   async contratacaoIniciada(body: unknown): Promise<{ ok: true }> {
     const payload: ContratacaoNotificacaoDto = ContratacaoNotificacaoSchema.parse(body);
-    await this.service.contratacaoIniciada?.(payload);
+    await this.services.contratacao?.iniciada(payload);
     return { ok: true };
   }
 
   async evento(body: unknown): Promise<{ ok: true }> {
     const envelope = body as { tipo?: string; dados?: unknown };
     const handlers: Record<string, ((payload: unknown) => Promise<void> | void) | undefined> = {
-      "contrato.averbado": this.service.contratoAverbado?.bind(this.service),
-      "adf.liberada": this.service.adfLiberada?.bind(this.service),
-      "retencao.oportunidade.aberta": this.service.retencaoOportunidade?.bind(this.service),
+      "contrato.averbado": this.services.contrato?.averbado.bind(this.services.contrato),
+      "retencao.oportunidade.aberta": this.services.retencao?.oportunidadeAberta.bind(this.services.retencao),
     };
     await handlers[envelope.tipo ?? ""]?.(envelope.dados);
     return { ok: true };

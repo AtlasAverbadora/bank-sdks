@@ -15,7 +15,7 @@ export { gerarSimulateRequest, runSimulate } from "../cli/simulate.js";
 export type { SimulateDivergencia, SimulateOptions, SimulateRequestOverrides, SimulateResult } from "../cli/simulate.js";
 
 /**
- * Sobe Fastify real com o `AverbacaoService` do banco atrás do controller.
+ * Sobe Fastify real com os services do banco atrás do controller.
  * `keepAliveTimeout` curto evita `app.close()` travar no keep-alive do fetch.
  */
 export async function fakeBank(options: AtlasAverbacaoOptions): Promise<FastifyInstance> {
