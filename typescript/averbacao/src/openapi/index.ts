@@ -10,27 +10,10 @@ import {
 } from "../core/dto/index.js";
 
 /**
- * OpenAPI das rotas que o BANCO precisa implementar (docs/07 §9: "OpenAPI
- * gerado dos mesmos schemas"), gerado a partir dos schemas Zod que o próprio
- * plugin Fastify usa para validar em runtime — não é um YAML escrito à mão que
- * diverge do código na primeira mudança de schema; é o schema, formatado
- * como JSON Schema.
- *
- * Mesmo precedente de `src/shared/openapi/zod-api-body.ts` (raiz do
- * monorepo): `zod-to-json-schema`, `target: "openApi3"`,
- * `$refStrategy: "none"` — inline tudo, sem `$ref` para um `definitions` que
- * este pacote não publica (o pacote não tem `components.schemas`
- * compartilhado entre gerações; cada rota já embute o schema inteiro).
- *
- * Mesmo detalhe conhecido do projeto: `zod-to-json-schema` infere o retorno
- * a partir do tipo estático do schema de entrada, e sob `ZodTypeAny` (a
- * união mais genérica) essa inferência estoura em profundidade (TS2589) —
- * o `tsc` recusa compilar. `zod-api-body.ts` resolve com `as any` na
- * ENTRADA (corta a inferência ali) seguido de cast tipado na SAÍDA; a mesma
- * técnica é aplicada aqui, pelo mesmo motivo.
+ * OpenAPI das rotas do banco, gerado dos mesmos schemas Zod do runtime.
+ * `as any` na entrada evita TS2589 do `zod-to-json-schema` sob `ZodTypeAny`.
  */
 function jsonSchemaDe(schema: ZodTypeAny): Record<string, unknown> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- ver comentário acima e src/shared/openapi/zod-api-body.ts: `zod-to-json-schema` estoura TS2589 sob `ZodTypeAny`; o `as any` de entrada corta a inferência, e o retorno já é sempre JSON Schema (Record<string, unknown>).
   return zodToJsonSchema(schema as any, { target: "openApi3", $refStrategy: "none" }) as Record<string, unknown>;
 }
 

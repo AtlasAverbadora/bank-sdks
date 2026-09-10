@@ -5,5 +5,3 @@ export const SaudeResponseSchema = z.object({
   sdk_version: z.number().int().positive(),
 });
 export type SaudeResponseDto = z.infer<typeof SaudeResponseSchema>;
-/** @deprecated use SaudeResponseDto */
-export type SaudeResponse = SaudeResponseDto;

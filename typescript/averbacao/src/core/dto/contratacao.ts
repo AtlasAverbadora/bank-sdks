@@ -12,5 +12,3 @@ export const ContratacaoNotificacaoSchema = z
   })
   .passthrough();
 export type ContratacaoNotificacaoDto = z.infer<typeof ContratacaoNotificacaoSchema>;
-/** @deprecated use ContratacaoNotificacaoDto */
-export type ContratacaoNotificacao = ContratacaoNotificacaoDto;

@@ -2,7 +2,6 @@ import {
   ContratacaoNotificacaoSchema,
   OfertasRequestSchema,
   OfertasResponseSchema,
-  type ContratacaoNotificacaoDto,
   type OfertasResponseDto,
   type SaudeResponseDto,
 } from "./dto/index.js";
@@ -48,7 +47,7 @@ export class AverbacaoController {
   }
 
   async contratacaoIniciada(body: unknown): Promise<{ ok: true }> {
-    const payload: ContratacaoNotificacaoDto = ContratacaoNotificacaoSchema.parse(body);
+    const payload = ContratacaoNotificacaoSchema.parse(body);
     await this.services.contratacao?.iniciada(payload);
     return { ok: true };
   }

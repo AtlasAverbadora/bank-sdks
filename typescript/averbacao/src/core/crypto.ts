@@ -1,9 +1,7 @@
 import { createHmac, createPrivateKey, createPublicKey, sign, timingSafeEqual, verify } from "node:crypto";
 import type { OfertaDto } from "./dto/index.js";
 
-export type AtlasRequestHeaders = { timestamp: number; signature: string };
-
-export function hmac(secret: string | Buffer, value: string): string {
+function hmac(secret: string | Buffer, value: string): string {
   return createHmac("sha256", secret).update(value).digest("hex");
 }
 

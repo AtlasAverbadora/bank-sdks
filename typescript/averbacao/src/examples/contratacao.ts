@@ -3,7 +3,5 @@ import type { ContratacaoService } from "../core/services.js";
 
 /** Copie se o banco consome `POST /contratacoes`. */
 export class ContratacaoExampleImplementation implements ContratacaoService {
-  async iniciada(payload: ContratacaoNotificacaoDto): Promise<void> {
-    void payload;
-  }
+  async iniciada(_payload: ContratacaoNotificacaoDto): Promise<void> {}
 }

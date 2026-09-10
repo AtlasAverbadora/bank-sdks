@@ -13,7 +13,7 @@ export const OfertaSchema = z.object({
   assinatura: z.string().min(1).optional(),
 });
 export type OfertaDto = z.infer<typeof OfertaSchema>;
-/** @deprecated use OfertaDto */
+/** Alias público — o core importa `Oferta`. */
 export type Oferta = OfertaDto;
 
 export const OfertasResponseSchema = z.object({
@@ -21,7 +21,7 @@ export const OfertasResponseSchema = z.object({
   ofertas: z.array(OfertaSchema),
 });
 export type OfertasResponseDto = z.infer<typeof OfertasResponseSchema>;
-/** @deprecated use OfertasResponseDto */
+/** Alias público — o core importa `OfertasResponse`. */
 export type OfertasResponse = OfertasResponseDto;
 
 export const OfertasRequestSchema = z.object({
@@ -47,5 +47,3 @@ export const OfertasRequestSchema = z.object({
   }),
 });
 export type OfertasRequestDto = z.infer<typeof OfertasRequestSchema>;
-/** @deprecated use OfertasRequestDto */
-export type OfertasRequest = OfertasRequestDto;

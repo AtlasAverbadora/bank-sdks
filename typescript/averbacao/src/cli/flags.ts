@@ -1,4 +1,4 @@
-export type ParsedFlags = { positional: string[]; flags: Record<string, string> };
+type ParsedFlags = { positional: string[]; flags: Record<string, string> };
 
 export function parseFlags(args: string[]): ParsedFlags {
   const positional: string[] = [];

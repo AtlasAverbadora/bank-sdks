@@ -20,13 +20,12 @@ export type SdkHttpError = {
   body: Record<string, unknown>;
 };
 
-/** HMAC nas POSTs do contrato. `GET /saude` fica aberto (sonda do circuit breaker). */
-export function exigeAssinaturaAtlas(method: string, url: string): boolean {
+function exigeAssinaturaAtlas(method: string, url: string): boolean {
   const path = url.split("?")[0];
   return method === "POST" && path !== "/saude";
 }
 
-export function verificarAssinaturaAtlas(segredo: string | Buffer, body: unknown, signatureHeader: string): boolean {
+function verificarAssinaturaAtlas(segredo: string | Buffer, body: unknown, signatureHeader: string): boolean {
   return verifyAtlasRequest(segredo, JSON.stringify(body ?? {}), signatureHeader);
 }
 

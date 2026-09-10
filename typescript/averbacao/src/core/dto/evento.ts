@@ -12,5 +12,3 @@ export const EventoEnvelopeSchema = z.object({
   dados: z.unknown(),
 });
 export type EventoEnvelopeDto = z.infer<typeof EventoEnvelopeSchema>;
-/** @deprecated use EventoEnvelopeDto */
-export type EventoEnvelope = EventoEnvelopeDto;

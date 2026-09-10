@@ -14,7 +14,11 @@
     "./openapi": { "types": "./dist/openapi/index.d.ts", "default": "./dist/openapi/index.js" }
   },
   "bin": { "atlas-sdk": "./dist/cli/index.js" },
-  "scripts": { "build": "tsc -p tsconfig.json", "prepare": "tsc -p tsconfig.json" },
+  "scripts": {
+    "clean": "node --input-type=module -e \"import { rmSync } from 'node:fs'; rmSync('dist', { recursive: true, force: true })\"",
+    "build": "pnpm clean && tsc -p tsconfig.json",
+    "prepare": "pnpm build"
+  },
   "dependencies": { "fastify": "5.11.3", "zod": "^3.25.76", "zod-to-json-schema": "^3.25.2" },
   "devDependencies": { "@types/node": "^20.14.10", "typescript": "^5.5.3" }
 }

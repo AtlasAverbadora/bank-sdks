@@ -1,9 +1,7 @@
 import type { FastifyPluginAsync } from "fastify";
 import { criarAverbacaoRuntime, mapearErroHttp, type AtlasAverbacaoOptions } from "./http.js";
 
-export type { AtlasAverbacaoConfig, AtlasAverbacaoOptions } from "./http.js";
-export { AverbacaoController, criarAverbacaoRuntime, mapearErroHttp } from "./http.js";
-export type { AverbacaoServices, ContratacaoService, ContratoService, OfertasService, RetencaoService, SdkHttpError } from "./http.js";
+export type { AtlasAverbacaoOptions } from "./http.js";
 
 export const atlasAverbacao: FastifyPluginAsync<AtlasAverbacaoOptions> = async (app, options) => {
   const { controller, autenticar } = criarAverbacaoRuntime(options);
