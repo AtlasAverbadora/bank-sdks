@@ -1,0 +1,11 @@
+server.port: ${PORT:3000}
+spring:
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+    default-property-inclusion: non_null
+springdoc:
+  api-docs:
+    path: /docs/v1/swagger.json
+  swagger-ui:
+    path: /docs
+    disable-swagger-default-url: true

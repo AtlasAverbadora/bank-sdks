@@ -10,7 +10,11 @@ Modo Ataque não entra aqui: o banco chama a Atlas. Pendências do backend:
 | Pasta | Linguagem | Estado |
 |---|---|---|
 | `typescript/` | TypeScript (Fastify) | adaptador |
-| `dotnet/` | .NET | em breve |
-| `java/` | Java | em breve |
+| `dotnet/` | .NET 8 (ASP.NET Core) | adaptador |
+| `java/` | Java 21 (Spring Boot) | adaptador |
 
-Guia: `typescript/README.md`.
+Mesmo contrato HTTP: `/v1/ofertas`, `/v1/contratacoes`,
+`/v1/contratos/averbados`, `/v1/retencao/oportunidades`, `/v1/saude`.
+Auth: pareamento Ed25519 + RFC 9421.
+
+Guias: `typescript/README.md`, `dotnet/README.md`, `java/README.md`.

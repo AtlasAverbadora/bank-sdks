@@ -1,6 +1,11 @@
 node_modules/
 dist/
 typescript/data/
+dotnet/data/
+java/data/
+**/bin/
+**/obj/
+java/target/
 *.log
 .DS_Store
 .env
